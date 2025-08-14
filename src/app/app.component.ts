@@ -1,12 +1,24 @@
-import { Component } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { MainLayoutComponent } from './core/components/main-layout/main-layout.component';
+import { MatSnackBar, MatSnackBarModule } from '@angular/material/snack-bar';
+import { NotificationService } from './core/services/notification.service';
 
 @Component({
   selector: 'app-root',
-  imports: [MainLayoutComponent],
+  imports: [MainLayoutComponent, MatSnackBarModule],
   templateUrl: './app.component.html',
   styleUrl: './app.component.scss'
 })
-export class AppComponent {
+export class AppComponent implements OnInit {
   title = 'fe_beta_blogs-evening';
+
+  constructor(private notificationService: NotificationService, private snackBar: MatSnackBar) {}
+
+  ngOnInit() {
+    this.notificationService.notification$.subscribe((notification) => {
+      this.snackBar.open(notification, 'Dismiss', {
+        duration: 3000,
+      });
+    });
+  }
 }
